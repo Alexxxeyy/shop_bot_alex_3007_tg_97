@@ -1,0 +1,13 @@
+{
+  "require": {
+    "php": ">=8.0",
+    "ext-pdo": "*",
+    "ext-json": "*",
+    "ext-curl": "*"
+  },
+  "autoload": {
+    "psr-0": {
+      "app\\": ""
+    }
+  }
+}
