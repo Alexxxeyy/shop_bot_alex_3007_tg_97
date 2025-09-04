@@ -71,7 +71,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
 <!-- paste it in bottom of html body -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.0/dist/fancybox/fancybox.umd.js"></script>
-<script src="../js/script.js"></script>
+<script src="js/script.js"></script>
 
 </body>
 </html>
