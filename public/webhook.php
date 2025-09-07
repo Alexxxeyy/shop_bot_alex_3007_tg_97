@@ -10,3 +10,4 @@ file_put_contents(
     print_r($data, 1) . PHP_EOL . PHP_EOL,
     FILE_APPEND
 );
+Telegram::sendMessage($data['message']['text']);
