@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . "/vendor/autoload.php";
-
 use app\components\Telegram;
 
 $data = Telegram::getInputData();
@@ -10,4 +9,7 @@ file_put_contents(
     print_r($data, 1) . PHP_EOL . PHP_EOL,
     FILE_APPEND
 );
-Telegram::sendMessage($data['message']['text']);
+
+if (isset($data['message']['chat']['id']) && isset($data['message']['text'])) {
+    Telegram::sendMessage($data['message']['chat']['id'], $data['message']['text']);
+}
