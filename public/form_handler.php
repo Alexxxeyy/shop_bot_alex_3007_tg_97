@@ -31,11 +31,21 @@ $order = [
 ];
 
 $order_id = Orders::add($order);
+if (!$order_id) {
+    echo json_encode(["error"=>"Ошибка добавления заказа"]);
+    exit;
+}
 
 $message = 'Новый заказ #' . $order_id . PHP_EOL .
-    'Товар: #' . $order['product_id'] . ' ' . $product['product_name'] . PHP_EOL .
+    'Товар: #' . $order['product_id'] . ' ' . $order['product_name'] . PHP_EOL .
     'Количество: ' . $order['product_count'] . PHP_EOL .
     'Цена: ' . $order['product_price'] . PHP_EOL .
     'Сумма: ' . ($order['product_count'] * $order['product_price']);
-Telegram::sendMessage($message);
+
+$result = Telegram::sendMessage($message);
+
+if (!$result) {
+    error_log("Ошибка отправки сообщения в Telegram: $message");
+}
+
 echo json_encode(['success' => 1]);

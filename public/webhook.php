@@ -4,16 +4,25 @@ use app\components\Telegram;
 
 $data = Telegram::getInputData();
 
-if( !isset($data['message']['chat']['id']) || $data['message']['chat']['id'] !== Telegram::CHAT_ID ) {
+if (
+    !isset($data['message']['chat']['id']) ||
+    (string)$data['message']['chat']['id'] !== (string)Telegram::CHAT_ID
+) {
+    http_response_code(200); // Можно явно отвечать OK
     exit;
 }
 
+// Логирование для отладки
 file_put_contents(
     __DIR__ . '/../storage/logs/webhook.log',
-    print_r($data, 1) . PHP_EOL . PHP_EOL,
+    print_r($data, true) . PHP_EOL . PHP_EOL,
     FILE_APPEND
 );
 
-if (isset($data['message']['chat']['id']) && isset($data['message']['text'])) {
+// "Эхо"-бот: повторяет присланное сообщение
+if (isset($data['message']['chat']['id'], $data['message']['text'])) {
     Telegram::sendMessage($data['message']['chat']['id'], $data['message']['text']);
 }
+
+http_response_code(200);
+echo 'ok';
