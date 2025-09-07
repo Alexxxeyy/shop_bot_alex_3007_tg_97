@@ -35,5 +35,6 @@ class Orders
             'created_at'    => $data['created_at'],
             'phone'         => $data['phone'],
         ]);
+        return $pdo->lastInserId();
     }
 }

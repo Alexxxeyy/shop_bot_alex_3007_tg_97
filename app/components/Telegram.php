@@ -4,6 +4,7 @@ namespace app\components;
 class Telegram
 {
     const API_TOKEN = '8486389723:AAF1TgvepVaWIIljoh86SDixmKUGjIbO9VM';
+    const CHAT_ID = 1945804086;
     public static function getInputData()
     {
         $input = file_get_contents('php://input');

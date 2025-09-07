@@ -3,6 +3,7 @@ header('Content-Type: application/json');
 require_once __DIR__ . "/../vendor/autoload.php";
 use app\models\Orders;
 use app\models\Products;
+use app\components\Telegram;
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['error' => 'Неверный метод запроса']);
@@ -29,11 +30,12 @@ $order = [
     'phone'         => trim($_POST['phone']),
 ];
 
-$result = Orders::add($order);
+$order_id = Orders::add($order);
 
-if ($result === false) {
-    echo json_encode(['error' => 'Ошибка сохранения заказа']);
-    exit;
-}
-
+$message = 'Новый заказ #' . $order_id . PHP_EOL .
+    'Товар: #' . $order['product_id'] . ' ' . $product['product_name'] . PHP_EOL .
+    'Количество: ' . $order['product_count'] . PHP_EOL .
+    'Цена: ' . $order['product_price'] . PHP_EOL .
+    'Сумма: ' . ($order['product_count'] * $order['product_price']);
+Telegram::sendMessage($message);
 echo json_encode(['success' => 1]);
