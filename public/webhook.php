@@ -1,7 +1,9 @@
 <?php
+require_once __DIR__ . "/vendor/autoload.php";
 
-$input = file_get_contents('php://input');
-$data = json_decode($input, true);
+use app\components\Telegram;
+
+$data = Telegram::getInputData();
 
 file_put_contents(
     __DIR__ . '/../storage/logs/webhook.log',
