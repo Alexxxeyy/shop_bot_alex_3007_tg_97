@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/vendor/autoload.php";
+require_once __DIR__ . "/../vendor/autoload.php";
 use app\components\Telegram;
 
 $data = Telegram::getInputData();
@@ -21,7 +21,7 @@ file_put_contents(
 
 // "Эхо"-бот: повторяет присланное сообщение
 if (isset($data['message']['chat']['id'], $data['message']['text'])) {
-    Telegram::sendMessage($data['message']['chat']['id'], $data['message']['text']);
+    Telegram::sendMessage($data['message']['text']);
 }
 
 http_response_code(200);
