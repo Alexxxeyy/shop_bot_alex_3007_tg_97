@@ -36,10 +36,10 @@ class Telegram
         return json_decode($result, true);
     }
 
-    public static function sendMessage($chat_id, $text)
+    public static function sendMessage($text)
     {
         $params = [
-            'chat_id' => $chat_id,
+            'chat_id' => static::CHAT_ID,
             'text' => $text,
         ];
         static::apiRequest('sendMessage', $params);
