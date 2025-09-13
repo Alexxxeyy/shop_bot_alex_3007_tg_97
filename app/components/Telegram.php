@@ -36,12 +36,19 @@ class Telegram
         return json_decode($result, true);
     }
 
-    public static function sendMessage($text)
+    public static function sendMessage($text, $keyboard=null)
     {
         $params = [
             'chat_id' => static::CHAT_ID,
             'text' => $text,
         ];
+        if ($keyboard) {
+            $reply_markup = [
+                'inline_keyboard' => $keyboard,
+            ];
+            $params['reply_markup'] = json_encode($reply_markup);
+        }
+
         static::apiRequest('sendMessage', $params);
     }
 }

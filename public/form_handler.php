@@ -42,7 +42,14 @@ $message = 'Новый заказ #' . $order_id . PHP_EOL .
     'Цена: ' . $order['product_price'] . PHP_EOL .
     'Сумма: ' . ($order['product_count'] * $order['product_price']);
 
-$result = Telegram::sendMessage($message);
+$keyboard = [
+    [
+        ['text' => 'Новый', 'callback_data' => json_encode(['command' =>'toggle_order_status', 'id' => $order_id])],
+        ['text' => 'Удалить', 'callback_data' => json_encode(['command' =>'delete_order', 'id' => $order_id])],
+    ]
+];
+
+$result = Telegram::sendMessage($message, $keyboard);
 
 if (!$result) {
     error_log("Ошибка отправки сообщения в Telegram: $message");
