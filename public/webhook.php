@@ -13,7 +13,7 @@ if (isset($data['message'])) {
     if ($data['callback_query']['chat']['id'] !== Telegram::CHAT_ID) {
         exit;
     }
-    Bot::processCallback($data['message']);
+    Bot::processCallback($data['callback_query']);
 }
 
 file_put_contents(
