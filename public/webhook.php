@@ -19,10 +19,3 @@ file_put_contents(
     FILE_APPEND
 );
 
-// "Эхо"-бот: повторяет присланное сообщение
-if (isset($data['message']['chat']['id'], $data['message']['text'])) {
-    Telegram::sendMessage($data['message']['text']);
-}
-
-http_response_code(200);
-echo 'ok';
