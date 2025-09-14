@@ -51,4 +51,26 @@ class Telegram
 
         static::apiRequest('sendMessage', $params);
     }
+    public static function editMessageKeyboard($message_id, $keyboard=null)
+    {
+        $params = [
+            'chat_id' => static::CHAT_ID,
+            'message_id' => $message_id
+        ];
+        if ($keyboard) {
+            $reply_markup = [
+                'inline_keyboard' => $keyboard,
+            ];
+            $params['reply_markup'] = json_encode($reply_markup);
+        }
+        static::apiRequest('editMessageReplyMarkup', $params);
+    }
+
+    public static function answerCallbackQuery($callback_query_id)
+    {
+    $params = [
+        'callbackquery_id' => $callback_query_id,
+    ];
+        static::apiRequest('answerCallbackQuery', $params);
+    }
 }
