@@ -45,7 +45,8 @@ class Bot
                     foreach ($orders as $order) {
                         $message .= 'Заказ #' . $order['id'] . PHP_EOL .
                             'Сумма: ' . ($order['product_count'] * $order['product_price']) . PHP_EOL .
-                            'Создан: ' . $order['created_at'];
+                            'Создан: ' . $order['created_at'] . PHP_EOL .
+                            '/order_' . $order['id'] . PHP_EOL . PHP_EOL;
                     }
                     Telegram::sendMessage($message);
                     break;
