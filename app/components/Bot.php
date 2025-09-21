@@ -38,6 +38,17 @@ class Bot
                     $keyboard = Bot::getOrderKeyboard($order['id'], $order['status']);
                     Telegram::sendMessage($message, $keyboard);
                         break;
+                case 'orders':
+                    $orders = Orders::all();
+                    $orders = array_reverse($orders);
+                    $message = '';
+                    foreach ($orders as $order) {
+                        $message .= 'Заказ #' . $order['id'] . PHP_EOL .
+                            'Сумма: ' . ($order['product_count'] * $order['product_price']) . PHP_EOL .
+                            'Создан: ' . $order['created_at'];
+                    }
+                    Telegram::sendMessage($message);
+                    break;
                     }
 
             }

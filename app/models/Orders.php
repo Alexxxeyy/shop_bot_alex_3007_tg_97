@@ -88,4 +88,12 @@ class Orders
         $stmt->execute(['id' => $id]);
         return $stmt->fetch();
     }
+
+    public static function all()
+    {
+        $pdo = Database::connect();
+        $stmt = $pdo->prepare(('select * from orders order by `created_at` desc limit 10'));
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 }
