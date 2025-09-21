@@ -1,4 +1,5 @@
 <?php
+
 namespace app\components;
 
 use app\models\Orders;
@@ -12,19 +13,19 @@ class Bot
     {
         if (preg_match('~^/([a-z]+)(?:[\s_]+(.+))?$~', $message['text'], $matches)) {
             $command = $matches[1];
-            if(isset($matches[2])) {
+            if (isset($matches[2])) {
                 $params = preg_split('~[\s_]+~', $matches[2]);
             } else {
-                $params =[];
+                $params = [];
             }
-            switch($command) {
+            switch ($command) {
                 case 'order':
-                    if(!$params) {
+                    if (!$params) {
                         Telegram::sendMessage('Необходимо указать ID заказа');
                         return;
                     }
                     $order = Orders::one($params[0]);
-                    if(!$order) {
+                    if (!$order) {
                         Telegram::sendMessage('Заказ с таким ID не существует');
                         return;
                     }
@@ -37,9 +38,33 @@ class Bot
                         'Изменен: ' . $order['modified_at'];
                     $keyboard = Bot::getOrderKeyboard($order['id'], $order['status']);
                     Telegram::sendMessage($message, $keyboard);
-                        break;
+                    break;
                 case 'orders':
-                    $orders = Orders::all();
+                    $where = [];
+                    $where_params = [];
+                    if (array_search('new', $params)) {
+                        $where[] = 'status = 0';
+                    } elseif (array_search('done', $params)) {
+                        $where[] = 'status = 1';
+                    }
+                    if (array_search('today', $params)) {
+                        $where[] = 'created_at >= :date';
+                        $where_params['date'] = (date('Y-m-d'));
+                    } elseif (array_search('week', $params)) {
+                        $where[] = 'created_at >= :date';
+                        $where_params['date'] = (date('Y-m-d', strtotime('-7 day')));
+                    } elseif (array_search('month', $params)) {
+                        $where[] = 'created_at >= :date';
+                        $where_params['date'] = (date('Y-m-d', strtotime('-1 month')));
+                    }
+                    foreach ($params as $param) {
+                        if (is_numeric($param)) {
+                            $where[] = 'product_id = :id';
+                            $where_params['product_id'] = $param;
+                        }
+                    }
+
+                    $orders = Orders::all($where, $where_params);
                     $orders = array_reverse($orders);
                     $message = '';
                     foreach ($orders as $order) {
@@ -50,11 +75,12 @@ class Bot
                     }
                     Telegram::sendMessage($message);
                     break;
-                    }
-
             }
 
         }
+
+    }
+
 
     public static function processCallback($callback_query)
     {

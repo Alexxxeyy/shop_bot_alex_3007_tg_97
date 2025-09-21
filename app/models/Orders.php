@@ -89,11 +89,15 @@ class Orders
         return $stmt->fetch();
     }
 
-    public static function all()
+    public static function all($where=null, $params=null)
     {
         $pdo = Database::connect();
-        $stmt = $pdo->prepare(('select * from orders order by `created_at` desc limit 10'));
-        $stmt->execute();
+        $sql_where = '';
+        if ($where) {
+            $sql_where = 'WHERE' . implode(' AND ', $where);
+        }
+        $stmt = $pdo->prepare(('select * from orders ' . $sql_where . ' order by `created_at` desc limit 10'));
+        $stmt->execute($params);
         return $stmt->fetchAll();
     }
 }
