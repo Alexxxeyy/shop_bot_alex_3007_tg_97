@@ -42,6 +42,14 @@ class Bot
                 $chat_id = $callback_query['message']['chat']['id'];
                 Telegram::editMessageKeyboard($chat_id, $message_id, $keyboard);
                 break;
+            case 'delete_order':
+                $message = 'Удалить заказ #' . $data['id'] . '?';
+                $keyboard = static::getDeleteOrderKeyboard($data['id']);
+                Telegram::sendMessage($message, $keyboard);
+                break;
+            case 'delete_order_cancel':
+                Telegram::deleteMessage($message_id);
+                break;
             // Добавьте другие case, если нужно
         }
     }
@@ -63,6 +71,27 @@ class Bot
                     'callback_data' => json_encode([
                         'command' => 'delete_order',
                         'id' => $order_id
+                    ])
+                ]
+            ]
+        ];
+    }
+
+    private static function getDeleteOrderKeyboard(mixed $id)
+    {
+        return [
+            [
+                [
+                    'text' => 'Да',
+                    'callback_data' => json_encode([
+                        'command' => 'delete_order_confirm',
+                        'id' => $order_id
+                    ])
+                ],
+                [
+                    'text' => 'Отмена',
+                    'callback_data' => json_encode([
+                        'command' => 'delete_order_cancel'
                     ])
                 ]
             ]

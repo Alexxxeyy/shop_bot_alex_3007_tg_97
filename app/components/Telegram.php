@@ -5,6 +5,7 @@ class Telegram
 {
     const API_TOKEN = '8486389723:AAF1TgvepVaWIIljoh86SDixmKUGjIbO9VM';
     const CHAT_ID = 1945804086;
+
     public static function getInputData()
     {
         $input = file_get_contents('php://input');
@@ -20,7 +21,7 @@ class Telegram
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params)); // или просто $params
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, false);
@@ -36,7 +37,7 @@ class Telegram
         return json_decode($result, true);
     }
 
-    public static function sendMessage($text, $keyboard=null)
+    public static function sendMessage($text, $keyboard = null)
     {
         $params = [
             'chat_id' => static::CHAT_ID,
@@ -51,6 +52,7 @@ class Telegram
 
         static::apiRequest('sendMessage', $params);
     }
+
     public static function editMessageKeyboard($chat_id, $message_id, $keyboard = null)
     {
         $params = [
@@ -69,8 +71,17 @@ class Telegram
     public static function answerCallbackQuery($callback_query_id)
     {
         $params = [
-            'callback_query_id' => $callback_query_id,  // правильно!
+            'callback_query_id' => $callback_query_id,
         ];
         static::apiRequest('answerCallbackQuery', $params);
+    }
+
+    public static function deleteMessage($message_id)
+    {
+        $params = [
+            'chat_id' => static::CHAT_ID,
+            'message_id' => $message_id
+        ];
+        static::apiRequest('deleteMessage', $params);
     }
 }
