@@ -47,7 +47,6 @@ class Bot
                     } elseif (array_search('done', $params) !== false) {
                         $where[] = 'status = 1';
                     }
-                    file_put_contents(__DIR__ . 'log.txt', print_r($params, 1));
                     if (array_search('today', $params) !== false) {
                         $where[] = 'created_at >= :date';
                         $where_params['date'] = (date('Y-m-d'));
