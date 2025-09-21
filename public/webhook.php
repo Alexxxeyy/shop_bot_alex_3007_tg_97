@@ -11,7 +11,8 @@ if (isset($data['message'])) {
     }
     Bot::processMessage($data['message']);
 } elseif (isset($data['callback_query'])) {
-    if ($data['callback_query']['chat']['id'] !== Telegram::CHAT_ID) {
+    // chat_id внутри message в callback_query!
+    if ($data['callback_query']['message']['chat']['id'] !== Telegram::CHAT_ID) {
         exit;
     }
     Bot::processCallback($data['callback_query']);
