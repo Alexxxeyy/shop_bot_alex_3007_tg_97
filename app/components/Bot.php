@@ -39,7 +39,8 @@ class Bot
                 }
                 $status = Orders::toggleStatus($data['id']);
                 $keyboard = static::getOrderKeyboard($data['id'], $status);
-                Telegram::editMessageKeyboard($message_id, $keyboard);
+                $chat_id = $callback_query['message']['chat']['id'];
+                Telegram::editMessageKeyboard($chat_id, $message_id, $keyboard);
                 break;
             // Добавьте другие case, если нужно
         }
