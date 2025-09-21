@@ -42,18 +42,18 @@ class Bot
                 case 'orders':
                     $where = [];
                     $where_params = [];
-                    if (array_search('new', $params) !== false) {
+                    if (array_search('new', $params) != false) {
                         $where[] = 'status = 0';
-                    } elseif (array_search('done', $params) !== false) {
+                    } elseif (array_search('done', $params) != false) {
                         $where[] = 'status = 1';
                     }
-                    if (array_search('today', $params) !== false) {
+                    if (array_search('today', $params) != false) {
                         $where[] = 'created_at >= :date';
                         $where_params['date'] = (date('Y-m-d'));
-                    } elseif (array_search('week', $params) !== false) {
+                    } elseif (array_search('week', $params) != false) {
                         $where[] = 'created_at >= :date';
                         $where_params['date'] = (date('Y-m-d', strtotime('-7 day')));
-                    } elseif (array_search('month', $params) !== false) {
+                    } elseif (array_search('month', $params) != false) {
                         $where[] = 'created_at >= :date';
                         $where_params['date'] = (date('Y-m-d', strtotime('-1 month')));
                     }
