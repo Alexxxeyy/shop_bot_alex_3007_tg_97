@@ -40,6 +40,7 @@ class Bot
                     Telegram::sendMessage($message, $keyboard);
                     break;
                 case 'orders':
+                    file_put_contents(__DIR__ . 'log.txt', print_r($params, 1));
                     $where = [];
                     $where_params = [];
                     if (array_search('new', $params)) {
