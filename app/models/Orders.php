@@ -84,7 +84,7 @@ class Orders
     public static function one($id)
     {
         $pdo = Database::connect();
-        $stmt = $pdo->prepare('select * from order where id = :id');
+        $stmt = $pdo->prepare('select * from orders where id = :id');
         $stmt->execute(['id' => $id]);
         return $stmt->fetch();
     }
