@@ -4,6 +4,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
 use app\models\Orders;
 use app\models\Products;
 use app\components\Telegram;
+use app\components\Bot;
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['error' => 'Неверный метод запроса']);
@@ -42,12 +43,7 @@ $message = 'Новый заказ #' . $order_id . PHP_EOL .
     'Цена: ' . $order['product_price'] . PHP_EOL .
     'Сумма: ' . ($order['product_count'] * $order['product_price']);
 
-$keyboard = [
-    [
-        ['text' => 'Новый', 'callback_data' => json_encode(['command' =>'toggle_order_status', 'id' => $order_id])],
-        ['text' => 'Удалить', 'callback_data' => json_encode(['command' =>'delete_order', 'id' => $order_id])],
-    ]
-];
+$keyboard = Bot::getOrderKeyboard($order_id, 0);
 
 $result = Telegram::sendMessage($message, $keyboard);
 

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . "/../vendor/autoload.php";
 use app\components\Telegram;
+use app\components\Bot;
 
 $data = Telegram::getInputData();
 
