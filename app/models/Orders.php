@@ -73,4 +73,11 @@ class Orders
             return false; // Если заказа с таким ID нет
         }
     }
+
+    public static function delete(mixed $id)
+    {
+        $pdo = Database::connect();
+        $stmt = $pdo->prepare('delete from orders where id = :id');
+        $stmt->execute(['id'=>$id]);
+    }
 }
