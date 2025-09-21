@@ -40,21 +40,21 @@ class Bot
                     Telegram::sendMessage($message, $keyboard);
                     break;
                 case 'orders':
-                    file_put_contents(__DIR__ . 'log.txt', print_r($params, 1));
                     $where = [];
                     $where_params = [];
-                    if (array_search('new', $params)) {
+                    if (array_search('new', $params) !== false) {
                         $where[] = 'status = 0';
-                    } elseif (array_search('done', $params)) {
+                    } elseif (array_search('done', $params) !== false) {
                         $where[] = 'status = 1';
                     }
-                    if (array_search('today', $params)) {
+                    file_put_contents(__DIR__ . 'log.txt', print_r($params, 1));
+                    if (array_search('today', $params) !== false) {
                         $where[] = 'created_at >= :date';
                         $where_params['date'] = (date('Y-m-d'));
-                    } elseif (array_search('week', $params)) {
+                    } elseif (array_search('week', $params) !== false) {
                         $where[] = 'created_at >= :date';
                         $where_params['date'] = (date('Y-m-d', strtotime('-7 day')));
-                    } elseif (array_search('month', $params)) {
+                    } elseif (array_search('month', $params) !== false) {
                         $where[] = 'created_at >= :date';
                         $where_params['date'] = (date('Y-m-d', strtotime('-1 month')));
                     }
