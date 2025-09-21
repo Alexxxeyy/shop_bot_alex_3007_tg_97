@@ -51,10 +51,10 @@ class Telegram
 
         static::apiRequest('sendMessage', $params);
     }
-    public static function editMessageKeyboard($message_id, $keyboard=null)
+    public static function editMessageKeyboard($chat_id, $message_id, $keyboard = null)
     {
         $params = [
-            'chat_id' => static::CHAT_ID,
+            'chat_id' => $chat_id,
             'message_id' => $message_id
         ];
         if ($keyboard) {
@@ -68,9 +68,9 @@ class Telegram
 
     public static function answerCallbackQuery($callback_query_id)
     {
-    $params = [
-        'callbackquery_id' => $callback_query_id,
-    ];
+        $params = [
+            'callback_query_id' => $callback_query_id,  // правильно!
+        ];
         static::apiRequest('answerCallbackQuery', $params);
     }
 }
