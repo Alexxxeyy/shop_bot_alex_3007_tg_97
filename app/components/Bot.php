@@ -2,14 +2,47 @@
 namespace app\components;
 
 use app\models\Orders;
+use http\Params;
+
 // use app\components\Telegram; // Раскомментируйте и укажите путь, если Telegram — ваш отдельный компонент
 
 class Bot
 {
     public static function processMessage($message)
     {
-        // Логика обработки сообщений (если требуется)
-    }
+        if (preg_match('~^/([a-z]+)(?:[\s_]+(.+))?$~', $message['text'], $matches)) {
+            $command = $matches[1];
+            if(isset($matches[2])) {
+                $params = preg_split('~[\s_]+~', $matches[2]);
+            } else {
+                $params =[];
+            }
+            switch($command) {
+                case 'order':
+                    if(!$params) {
+                        Telegram::sendMessage('Необходимо указать ID заказа');
+                        return;
+                    }
+                    $order = Orders::one($params[0]);
+                    if(!$order) {
+                        Telegram::sendMessage('Заказ с таким ID не существует');
+                        return;
+                    }
+                    $message = 'Заказ #' . $order['id'] . PHP_EOL .
+                        'Товар: #' . $order['product_id'] . ' ' . $order['product_name'] . PHP_EOL .
+                        'Количество: ' . $order['product_count'] . PHP_EOL .
+                        'Цена: ' . $order['product_price'] . PHP_EOL .
+                        'Сумма: ' . ($order['product_count'] * $order['product_price']) . PHP_EOL .
+                        'Создан: ' . $order['created_at'] . PHP_EOL .
+                        'Изменен: ' . $order['modified_at'];
+                    $keyboard = Bot::getOrderKeyboard($order['id'], $order['status']);
+                    Telegram::sendMessage($message, $keyboard);
+                        break;
+                    }
+
+            }
+
+        }
 
     public static function processCallback($callback_query)
     {

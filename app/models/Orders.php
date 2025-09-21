@@ -80,4 +80,12 @@ class Orders
         $stmt = $pdo->prepare('delete from orders where id = :id');
         $stmt->execute(['id'=>$id]);
     }
+
+    public static function one($id)
+    {
+        $pdo = Database::connect();
+        $stmt = $pdo->prepare('select * from order where id = :id');
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetch();
+    }
 }
