@@ -90,7 +90,7 @@ class Bot
                     'text' => 'Да',
                     'callback_data' => json_encode([
                         'command' => 'delete_order_confirm',
-                        'id' => $order_id
+                        'id' => $id
                     ])
                 ],
                 [
