@@ -53,7 +53,7 @@ class Bot
             case 'delete_order_confirm':
                 Orders::delete($data['id']);
                 Telegram::deleteMessage($message_id);
-                $message = 'Заказ #' . ' удален';
+                $message = 'Заказ #' . $data['id'] . ' удален';
                 Telegram::sendMessage($message);
             // Добавьте другие case, если нужно
         }
